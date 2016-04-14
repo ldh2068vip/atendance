@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - atendance@localhost" uuid="07debd38-1cf6-451f-9724-e5312819b18c">
+      <secret-storage>master_key</secret-storage>
+      <user-name>test</user-name>
+      <schema-pattern>atendance.pg_catalog atendance.public</schema-pattern>
+      <default-schemas>atendance.pg_catalog atendance.public</default-schemas>
+    </data-source>
+  </component>
+</project>
