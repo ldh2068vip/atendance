@@ -5,6 +5,7 @@ CREATE TABLE employee (
   name  VARCHAR(40),
   dep   VARCHAR(100),
   bakup VARCHAR(400),
+  flex BOOLEAN,
   PRIMARY KEY (id),
   CONSTRAINT un_key UNIQUE (wid)
 );
