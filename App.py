@@ -131,14 +131,17 @@ class AtendanceWork:
 
         cur.execute("select sum(ot) from report where wid = %s ",(wid,))
         # cur.fetchall();
+        res={}
         for r in cur.fetchall():
-            print(r[0].total_seconds()/3600)
+            # print(r[0].total_seconds()/3600)
             # print(str(r[0]))
-        conn.commit()
+            res['加班时间（小时）']=round(r[0].total_seconds()/3600,2);
+        # conn.commit()
 
         cur.close()
         conn.close()
-        return None
+        # print(res)
+        return res
     # 统计各类事件次数
     def queryEventByEm(self,wid):
         # 连接数据库
@@ -149,11 +152,20 @@ class AtendanceWork:
             print "Error: " + e.args[0]
 
         cur.execute("select count(islate),count(isleaveearly),count(missmor),count(missnoon),count(ot) from report where wid = %s ",(wid,))
+        res={}
+        for r in cur.fetchall():
+            res['迟到']=r[0]
+            res['早退']=r[1]
+            res['早上未打卡']=r[2]
+            res['下午未打卡']=r[3]
+            res['加班']=r[4]
+            # print(r[0])
         # conn.commit()
 
         cur.close()
         conn.close()
-        return None
+        # print(res)
+        return res
     # 查询考勤详情
     def queryDetailByEm(self,wid):
         # 连接数据库
@@ -163,17 +175,32 @@ class AtendanceWork:
         except Exception, e:
             print "Error: " + e.args[0]
 
-        cur.execute("select * from report where wid = %s ",(wid,))
+        cur.execute("select * from report where wid = %s  ORDER BY workdate",(wid,))
+        res=[]
+        for r in cur.fetchall():
+            row={};
+            row['wid']=r[1]
+            # row['weekday']=r[2].weekday()
+            row['date']=r[2].strftime("%A %y-%m-%d")
+            row['first']=r[3].strftime("%H:%M:%S %Z")
+            row['second']=r[4].strftime("%H:%M:%S %Z")
+            row['late']=r[6]
+            row['earlyout']=r[7]
+            row['mismor']=r[8]
+            row['misnoon']=r[9]
+            row['ot']=str(r[10])
+            res.append(row);
+
         # conn.commit()
 
         cur.close()
         conn.close()
-        return cur
+        return res
 
 if __name__ == "__main__":
     work = AtendanceWork();
     em=('SR000118','SR000123')
     # work.extract("file/test.xlsx")
-    # work.addFlexEmp(em)
-    # work.calculate(9, 30);
-    work.queryOTByEm("SR000118");
+    work.addFlexEmp(em)
+    work.calculate(9, 0);
+    # work.queryDetailByEm("SR000020");
