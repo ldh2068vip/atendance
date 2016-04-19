@@ -1,3 +1,5 @@
+# __author__ = 'kevin'
+# -*- coding: UTF-8 -*-
 from flask import Flask
 from flask.ext import restful
 import App
@@ -8,7 +10,7 @@ api = restful.Api(app)
 class HelloWorld(restful.Resource):
     def get(self):
         return {'hello': 'world'}
-
+# 根据工号查询个人考勤详情
 class Rreport(restful.Resource):
     def get(self,wid):
         work=App.AtendanceWork();
