@@ -106,7 +106,7 @@ class AtendanceWork:
         return None
 
     # 设置弹性考核员工
-    def addFlexEmp(self,wids):
+    def addFlexEmp(self, wids):
         # 连接数据库
         try:
             conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
@@ -114,14 +114,15 @@ class AtendanceWork:
         except Exception, e:
             print "Error: " + e.args[0]
 
-        cur.execute("update employee set flex = TRUE WHERE  wid in %s",(wids,))
+        cur.execute("update employee set flex = TRUE WHERE  wid in (%s)", (wids,))
         conn.commit()
 
         cur.close()
         conn.close()
         return None
-    # 统计加班次数
-    def queryOTByEm(self,wid):
+
+    # 取消设置弹性考核员工
+    def delFlexEmp(self, wids):
         # 连接数据库
         try:
             conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
@@ -129,21 +130,38 @@ class AtendanceWork:
         except Exception, e:
             print "Error: " + e.args[0]
 
-        cur.execute("select sum(ot) from report where wid = %s ",(wid,))
+        cur.execute("update employee set flex = NULL WHERE  wid in (%s)", (wids,))
+        conn.commit()
+
+        cur.close()
+        conn.close()
+        return None
+
+    # 统计加班次数
+    def queryOTByEm(self, wid):
+        # 连接数据库
+        try:
+            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            cur = conn.cursor()
+        except Exception, e:
+            print "Error: " + e.args[0]
+
+        cur.execute("select sum(ot) from report where wid = %s ", (wid,))
         # cur.fetchall();
-        res={}
+        res = {}
         for r in cur.fetchall():
             # print(r[0].total_seconds()/3600)
             # print(str(r[0]))
-            res['加班时间（小时）']=round(r[0].total_seconds()/3600,2);
+            res['加班时间（小时）'] = round(r[0].total_seconds() / 3600, 2);
         # conn.commit()
 
         cur.close()
         conn.close()
         # print(res)
         return res
+
     # 统计各类事件次数
-    def queryEventByEm(self,wid):
+    def queryEventByEm(self, wid):
         # 连接数据库
         try:
             conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
@@ -151,14 +169,16 @@ class AtendanceWork:
         except Exception, e:
             print "Error: " + e.args[0]
 
-        cur.execute("select count(islate),count(isleaveearly),count(missmor),count(missnoon),count(ot) from report where wid = %s ",(wid,))
-        res={}
+        cur.execute(
+            "select count(islate),count(isleaveearly),count(missmor),count(missnoon),count(ot) from report where wid = %s ",
+            (wid,))
+        res = {}
         for r in cur.fetchall():
-            res['迟到']=r[0]
-            res['早退']=r[1]
-            res['早上未打卡']=r[2]
-            res['下午未打卡']=r[3]
-            res['加班']=r[4]
+            res['迟到'] = r[0]
+            res['早退'] = r[1]
+            res['早上未打卡'] = r[2]
+            res['下午未打卡'] = r[3]
+            res['加班'] = r[4]
             # print(r[0])
         # conn.commit()
 
@@ -166,8 +186,9 @@ class AtendanceWork:
         conn.close()
         # print(res)
         return res
+
     # 查询考勤详情
-    def queryDetailByEm(self,wid):
+    def queryDetailByEm(self, wid):
         # 连接数据库
         try:
             conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
@@ -175,20 +196,20 @@ class AtendanceWork:
         except Exception, e:
             print "Error: " + e.args[0]
 
-        cur.execute("select * from report where wid = %s  ORDER BY workdate",(wid,))
-        res=[]
+        cur.execute("select * from report where wid = %s  ORDER BY workdate", (wid,))
+        res = []
         for r in cur.fetchall():
-            row={};
-            row['wid']=r[1]
+            row = {};
+            row['wid'] = r[1]
             # row['weekday']=r[2].weekday()
-            row['date']=r[2].strftime("%A %y-%m-%d")
-            row['first']=r[3].strftime("%H:%M:%S %Z")
-            row['second']=r[4].strftime("%H:%M:%S %Z")
-            row['late']=r[6]
-            row['earlyout']=r[7]
-            row['mismor']=r[8]
-            row['misnoon']=r[9]
-            row['ot']=str(r[10])
+            row['date'] = r[2].strftime("%A %y-%m-%d")
+            row['first'] = r[3].strftime("%H:%M:%S %Z")
+            row['second'] = r[4].strftime("%H:%M:%S %Z")
+            row['late'] = r[6]
+            row['earlyout'] = r[7]
+            row['mismor'] = r[8]
+            row['misnoon'] = r[9]
+            row['ot'] = str(r[10])
             res.append(row);
 
         # conn.commit()
@@ -196,10 +217,26 @@ class AtendanceWork:
         cur.close()
         conn.close()
         return res
+    # 查询弹性考核的员工
+    def queryFlexEmployee(self):
+        # 连接数据库
+        try:
+            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            cur = conn.cursor()
+        except Exception, e:
+            print "Error: " + e.args[0]
+
+        cur.execute("select name,wid from employee where flex = TRUE  ORDER BY wid")
+        # row = {};
+        # for r in cur.fetchall():
+        #     row[r[0]]=r[1]
+        return cur.fetchall()
+        # return row
+
 
 if __name__ == "__main__":
     work = AtendanceWork();
-    em=('SR000118','SR000123')
+    em = ('SR000118', 'SR000123')
     # work.extract("file/test.xlsx")
     work.addFlexEmp(em)
     work.calculate(9, 0);

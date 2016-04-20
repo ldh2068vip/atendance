@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>无标题文档</title>
+    <link href="css/css.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+</head>
+
+<body>
+
+<div class="top">
+    <div class="logo">
+        <img src="img/logo.png" width="371" height="43"/>
+    </div>
+</div>
+
+
+<div class="main">
+    <div class="nav">
+        <a href="#"><img src="img/02.png" width="130" height="35"/></a>
+        <a href="#"><img src="img/03.png" width="130" height="35"/></a>
+        <a href="#"><img src="img/05.png" width="130" height="35"/></a>
+    </div>
+    <div class="admin">
+        <ul>
+            <li class="people">
+                <span>员工</span>
+                <input id="wid" name="wid" type="text"/>
+            </li>
+            <li class="timeadd">
+                <span>时间</span>
+                <select>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+                :
+                <select>
+                    <option>30</option>
+                    <option>00</option>
+                </select>
+            </li>
+            <li class="admbutt">
+                <input id="add" name="add" type="button" value="添加"/>
+                <input name="" type="button" value="重新计算"/>
+            </li>
+        </ul>
+
+        <ol id="list">
+            <!--<li>-->
+            <!--<span>张三</span>-->
+            <!--<a href="#">删除</a>-->
+            <!--</li>-->
+
+        </ol>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+<div class="foot">
+    <div class="foot_main">
+        <span>Copyright © 2014 SR All Rights Reserved 湘ICP备14013985号-1</span><span>湖南上容信息技术有限公司  </span>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function delem(obj) {
+//        alert("ss")
+        $.ajax({
+            type: "DELETE",
+            url: obj.href,
+            dataType: "json",
+            success: function (redata) {
+                window.location.reload();
+            }
+        });
+        window.location.reload();
+    }
+    $(function () {
+        $.ajax({ //no need to judge the browser type
+            type: "GET", //类型
+            url: "../employee/", //请求访问的servlet
+            dataType: "json",
+            success: function (returnedData) {   //成功返回的回调函数
+//                alert(returnedData)
+//                    $("#list").val(returnedData);
+                var tbody = "";
+                $.each(returnedData, function (name, value) {
+//                    alert(n + '--- ' + value);
+                    var trs = "";
+                    trs += "<li><span>" + name + "</span><a href='../config/" + value + "' onclick='delem(this);return false'> 删除  </a></li>";
+                    tbody += trs;
+                });
+                $("#list").append(tbody);
+//                window.location.reload();
+            }
+
+        });
+//        ====
+
+        $("#add").click(function () {
+//            alert($("#wid").val());
+            $.ajax({
+                type: "UPDATE",
+                url: "../config/" + $("#wid").val(),
+                dataType: "json",
+                success: function (returnedData) {
+//                    alert("ss")
+//                    window.location.reload();
+                }
+            });
+            window.location.reload();
+        });
+
+    })//don`t del
+</script>
+</body>
+</html>
