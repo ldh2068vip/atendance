@@ -1,50 +1,27 @@
 # __author__ = 'kevin'
 # -*- coding: UTF-8 -*-
-from flask import Flask, jsonify,request
+import os
+from flask import Flask, jsonify, request, render_template
 from flask.ext import restful
+import sys
+from werkzeug.utils import secure_filename
 import App
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 app = Flask(__name__)
-# api = restful.Api(app)
-#
-# class HelloWorld(restful.Resource):
-#     def get(self):
-#         return {'hello': 'world'}
-# # 根据工号查询个人考勤详情
-# class Rreport(restful.Resource):
-#     def get(self,wid):
-#         work=App.AtendanceWork();
-#         events=work.queryEventByEm(wid)
-#         ot_total=work.queryOTByEm(wid)
-#         detail=work.queryDetailByEm(wid);
-#         res={}
-#         res["events"]=events
-#         res['ot']=ot_total
-#         res['detail']=detail
-#         return res
-# # 根据工号设置是否弹性考核的熟悉
-# class EmployeeManage(restful.Resource):
-#     def get(self,wid):
-#         work=App.AtendanceWork();
-#         work.addFlexEmp(wid)
-#
-#         return None;
-#
-# # 重新计算考勤
-# class Calculate(restful.Resource):
-#     def get(self,hour,minute):
-#         work=App.AtendanceWork();
-#         work.calculate(hour,minute)
-#         return None;
-#
-# api.add_resource(HelloWorld, '/')
-# api.add_resource(EmployeeManage, '/config/<string:wid>')
-# api.add_resource(Rreport,'/report/<string:wid>')
+
 
 @app.route('/')
-def Hello():
-    return 'Hello,welcome'
-
+def index():
+    return render_template('index.html')
+@app.route('/config/')
+def admin():
+    return render_template('Admin.html')
+@app.route('/report/')
+def reporthtml():
+    return render_template('inquiry.html')
 
 # 根据工号查询个人考勤详情
 @app.route('/report/<string:wid>', methods=['GET'])
@@ -61,7 +38,7 @@ def report(wid):
 
 
 # 根据工号设置弹性考核的属性
-@app.route('/config/<string:wid>', methods=['UPDATE','DELETE'])
+@app.route('/config/<string:wid>', methods=['UPDATE', 'DELETE'])
 def employeeManage(wid):
     work = App.AtendanceWork();
     if request.method == 'DELETE':
@@ -71,7 +48,6 @@ def employeeManage(wid):
     return 'success'
 
 
-
 # 重新计算考勤
 @app.route('/calc/<int:hour>/<int:minute>', methods=['GET'])
 def calculate(hour, minute):
@@ -79,11 +55,29 @@ def calculate(hour, minute):
     work.calculate(hour, minute);
     return 'success'
 
-@app.route('/employee/',methods=['GET'])
+
+# 获取弹性考核的员工
+@app.route('/employee/', methods=['GET'])
 def queryFlexEmployee():
-    work=App.AtendanceWork();
-    res=work.queryFlexEmployee();
+    work = App.AtendanceWork();
+    res = work.queryFlexEmployee();
     return jsonify(res)
+
+
+# 文件上传并解析入库
+@app.route('/file/', methods=['POST','GET'])
+def fileUpload():
+    if request.method == 'POST':
+        f = request.files['file']
+        path = os.path.join(os.path.dirname(__file__), "file/" + f.filename)
+        f.save(path)
+        app = App.AtendanceWork()
+        app.extract(path)
+
+        return '上传成功'
+    elif request.method == 'GET':
+        return render_template('loading.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -23,7 +23,7 @@ class AtendanceWork:
         return df
 
     def extract(self, filePath):
-        data = work.loaddata(filePath)
+        data = self.loaddata(filePath)
         # 连接数据库
         try:
             conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
