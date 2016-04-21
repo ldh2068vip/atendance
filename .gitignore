@@ -1,4 +1,5 @@
 .idea/
+file/
 .settings/
 .DS_Store
 *.class
@@ -8,4 +9,5 @@
 *.iml
 *.ipr
 *.iws
+*.pyc
 
