@@ -1,0 +1,8 @@
+/.idea/
+/.settings/
+##files##
+.DS_Store
+*.class
+.classpath
+.project
+*.iml.idea/
