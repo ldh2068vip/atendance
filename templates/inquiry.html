@@ -1,160 +1,185 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
-<link href="../static/css/css.css" rel="stylesheet" type="text/css" />
+    <meta http-equiv="X-UA-Compatible" content="text/html"/>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="../static/css/css.css" rel="stylesheet" type="text/css"/>
+    <script src="../static/js/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/highcharts.js"></script>
+    <script type="text/javascript" src="../static/js/modules/exporting.js"></script>
+    <script type="text/javascript">
+        $(function () {
+    // Create the chart
+    var my_arr = new Array();
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'lala'
+        },
+        subtitle: {
+            text: 'haha'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: '次数'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
+        tooltip: {
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> <br/>'
+        },
+
+        series: [{
+            name: '',
+            colorByPoint: true,
+            data: [{
+                name: '迟到',
+                y: 56.33,
+            }, {
+                name: '早退',
+                y: 24.03,
+            }, {
+                name: '未打卡',
+                y: 10.38,
+            }, {
+                name: '加班',
+                y: 4.77,
+            }]
+        }]
+    });
+});
+    </script>
 </head>
 
 <body>
 
-	<div class="top">
-   		<div class="logo">
-        	<img src="../static/img/logo.png" width="371" height="43" />
-        </div>	 
+<div class="top">
+    <div class="logo">
+        <img src="../static/img/logo.png" width="371" height="43"/>
     </div>
-    
-    
-    <div class="main">
-    	<div class="nav">
-            <a href="/file/"><img src="../static/img/02.png" width="130" height="35"/></a>
-            <a href="/report/"><img src="../static/img/03.png" width="130" height="35"/></a>
-            <a href="/config/"><img src="../static/img/05.png" width="130" height="35"/></a>
-        </div>
-        <div class="inquiry">
-        	<div class="inq">
-        		<input name="" type="text" class="text" />
-                <input name="" type="button" value="查询" class="butt" />
-            </div>
-            <div class="clear"></div>
-            <span class="title">员工：张三  个人考勤情况</span>
-            <div class="time">
-            	<span>加班时长(小时)</span>
-                <span class="timess">45:23:00</span>
-            </div>
-            <div class="account">
-            	<img src="../static/img/test.jpg" width="543" height="293" />
-            </div>
-             <div class="clear"></div>
-            <div class="table">
-            	<table width="100%" border="0">
-                      <tr class="table_title">
-                        <td>日期</td>
-                        <td>迟到</td>
-                        <td>早退</td>
-                        <td>上班未打卡</td>
-                        <td>下班未打卡</td>
-                        <td>加班</td>
-                      </tr>
-                      <tr>
-                        <td>2016-04-23</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                      </tr>
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                      </tr>
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                      </tr>
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                      </tr>
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                      </tr>
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                      </tr>
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                      </tr>
-                    </table>
+</div>
 
-            </div>
+
+<div class="main">
+    <div class="nav">
+        <a href="/file/"><img src="../static/img/02.png" width="130" height="35"/></a>
+        <a href="/report/"><img src="../static/img/03.png" width="130" height="35"/></a>
+        <a href="/config/"><img src="../static/img/05.png" width="130" height="35"/></a>
+    </div>
+    <div class="inquiry">
+        <div class="inq">
+            <input name="" type="text" class="text"/>
+            <input name="" type="button" value="查询" class="butt"/>
         </div>
         <div class="clear"></div>
+        <span class="title">员工：张三  个人考勤情况</span>
+        <div class="time">
+            <span>加班时长(小时)</span>
+            <span class="timess">45:23:00</span>
+        </div>
+        <div class="account">
+            <div id="container" style="min-width: 110px; max-width: 500px; height: 293px; margin: 0 auto"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="table">
+            <table width="100%" border="0">
+                <tr class="table_title">
+                    <td>日期</td>
+                    <td>迟到</td>
+                    <td>早退</td>
+                    <td>上班未打卡</td>
+                    <td>下班未打卡</td>
+                    <td>加班</td>
+                </tr>
+                <tr>
+                    <td>2016-04-23</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+
+        </div>
     </div>
-    
-    
-    
-   <div class="foot">
-       <div class="foot_main">
-       		<span>Copyright © 2014 SR All Rights Reserved 湘ICP备14013985号-1</span><span>湖南上容信息技术有限公司  </span>
-       </div>
-   </div> 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-               
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     
+    <div class="clear"></div>
+</div>
+
+
+<div class="foot">
+    <div class="foot_main">
+        <span>Copyright © 2014 SR All Rights Reserved 湘ICP备14013985号-1</span><span>湖南上容信息技术有限公司  </span>
+    </div>
+</div>
+
+
 </body>
 </html>

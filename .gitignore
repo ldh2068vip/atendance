@@ -1,8 +1,11 @@
-/.idea/
-/.settings/
-##files##
+.idea/
+.settings/
 .DS_Store
 *.class
 .classpath
 .project
 *.iml.idea/
+*.iml
+*.ipr
+*.iws
+
