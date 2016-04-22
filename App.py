@@ -73,6 +73,7 @@ class AtendanceWork:
                 cur.execute("insert INTO report (wid,workDate,firstAt,sedAt) VALUES (%s,%s,%s,%s)",
                             (r[0], r[1], r[2], r[3]))
             except Exception, e:
+                # print(r)
                 print("Error:" + e.args[0])
         cur.execute("update report set wt = justify_hours(sedat-firstat);")
         cur.execute("update report set  ot = (wt - interval '9:00')  where (wt - interval '9:00') > interval '00' ;")
