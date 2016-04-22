@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import sys
 import psycopg2 as pg
+import ConfigParser
 from datetime import *
 
 reload(sys)
@@ -12,8 +13,20 @@ sys.setdefaultencoding('utf-8')
 
 
 class AtendanceWork:
+    db_name = None
+    db_host = None
+    db_user = None
+    db_password = None
+    db_port = '5432'
+
     def __init__(self):
-        pass
+        cf = ConfigParser.ConfigParser()
+        cf.read('db.ini')
+        self.db_host = cf.get('baseconf', 'db_host');
+        self.db_name = cf.get('baseconf', 'db_name');
+        self.db_user = cf.get('baseconf', 'db_user');
+        self.db_password = cf.get('baseconf', 'db_password');
+        self.db_port = cf.get('baseconf', 'db_port');
 
     # 读取excel
     def loaddata(self, filePath):
@@ -26,7 +39,8 @@ class AtendanceWork:
         data = self.loaddata(filePath)
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -63,11 +77,11 @@ class AtendanceWork:
     def calculate(self, hour, minute):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
-
 
         # --迟到 9 变量
         # -- update report set islate = true where firstat > time '9:00' and wt <> interval '00:00' and firstat < time '12:00';
@@ -109,7 +123,8 @@ class AtendanceWork:
     def addFlexEmp(self, wids):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -125,7 +140,8 @@ class AtendanceWork:
     def delFlexEmp(self, wids):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -141,7 +157,8 @@ class AtendanceWork:
     def queryOTByEm(self, wid):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -165,7 +182,8 @@ class AtendanceWork:
     def queryEventByEm(self, wid):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -197,7 +215,8 @@ class AtendanceWork:
     def queryDetailByEm(self, wid):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -229,7 +248,8 @@ class AtendanceWork:
     def queryFlexEmployee(self):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -238,22 +258,23 @@ class AtendanceWork:
         # row = {};
         # for r in cur.fetchall():
         #     row[r[0]]=r[1]
-        res=cur.fetchall();
+        res = cur.fetchall();
         cur.close()
         conn.close()
         return res
         # return row
 
     # 查询所有的员工（模糊查询）
-    def queryAllEmployee(self,name):
+    def queryAllEmployee(self, name):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname=self.db_name, host=self.db_host, user=self.db_user, password=self.db_password,
+                              port=self.db_port)
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
 
-        cur.execute("select name,wid from employee WHERE  name ilike %s  ORDER BY wid",(name+"%",))
+        cur.execute("select name,wid from employee WHERE  name ilike %s  ORDER BY wid", (name + "%",))
         res = []
         for r in cur.fetchall():
             row = {};
