@@ -1,5 +1,6 @@
 # __author__ = 'kevin'
 # -*- coding: UTF-8 -*-
+import os
 
 import pandas as pd
 import numpy as np
@@ -21,7 +22,7 @@ class AtendanceWork:
 
     def __init__(self):
         cf = ConfigParser.ConfigParser()
-        cf.read('db.ini')
+        cf.read(os.path.join(os.path.dirname(__file__), 'db.ini'))
         self.db_host = cf.get('baseconf', 'db_host');
         self.db_name = cf.get('baseconf', 'db_name');
         self.db_user = cf.get('baseconf', 'db_user');
