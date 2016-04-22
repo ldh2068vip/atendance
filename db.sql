@@ -7,7 +7,7 @@ CREATE TABLE employee (
   bakup VARCHAR(400),
   flex BOOLEAN,
   PRIMARY KEY (id),
-  CONSTRAINT un_key UNIQUE (wid)
+  CONSTRAINT em_un_key UNIQUE (wid)
 );
 DROP TABLE IF EXISTS atendance;
 CREATE TABLE atendance (
@@ -15,7 +15,8 @@ CREATE TABLE atendance (
   wid   VARCHAR(20),
   adate DATE,
   atime TIME,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+    CONSTRAINT atendance_un_key UNIQUE (wid,adate,atime)
 );
 DROP TABLE IF EXISTS report;
 CREATE TABLE report (
@@ -30,7 +31,8 @@ CREATE TABLE report (
   missMor       BOOLEAN,
   missNoon       BOOLEAN,
   ot          INTERVAL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  CONSTRAINT report_un_key UNIQUE (wid,workDate)
 );
 -- 查询每日打卡最早和最晚的记录
 -- select wid ,adate,min(atime) as mintime,max(atime) as maxtime from atendance m  group by wid,adate order by wid,adate;

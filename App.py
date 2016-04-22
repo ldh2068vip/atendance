@@ -48,15 +48,20 @@ class AtendanceWork:
 
         for row in data.itertuples():
             # print(row[4].split(" ")[0])
-            cur.execute("insert into atendance (wid,adate,atime) VALUES (%s,%s,%s)",
-                        (row[3], row[4].split(" ")[0], row[4].split(" ")[1]))
-
+            try:
+                cur.execute("insert into atendance (wid,adate,atime) VALUES (%s,%s,%s)",
+                            (row[3], row[4].split(" ")[0], row[4].split(" ")[1]))
+            except Exception, e:
+                print("Error:" + e.args[0])
         conn.commit()
 
         allWorks = data.drop_duplicates(data.keys()[2])
         for row in allWorks.itertuples():
-            cur.execute("insert into employee (wid,name,dep,bakup) VALUES (%s,%s,%s,%s)",
-                        (row[3], row[2], row[1], row[7]));
+            try:
+                cur.execute("insert into employee (wid,name,dep,bakup) VALUES (%s,%s,%s,%s)",
+                            (row[3], row[2], row[1], row[7]));
+            except Exception, e:
+                print("Error:" + e.args[0])
         conn.commit();
 
         cur.execute(
@@ -64,10 +69,13 @@ class AtendanceWork:
         rows = cur.fetchall()
 
         for r in rows:
-            cur.execute("insert INTO report (wid,workDate,firstAt,sedAt) VALUES (%s,%s,%s,%s)",
-                        (r[0], r[1], r[2], r[3]))
+            try:
+                cur.execute("insert INTO report (wid,workDate,firstAt,sedAt) VALUES (%s,%s,%s,%s)",
+                            (r[0], r[1], r[2], r[3]))
+            except Exception, e:
+                print("Error:" + e.args[0])
         cur.execute("update report set wt = justify_hours(sedat-firstat);")
-        cur.execute("update report set  ot = (wt - interval '8:00')  where (wt - interval '8:00') > interval '00' ;")
+        cur.execute("update report set  ot = (wt - interval '9:00')  where (wt - interval '9:00') > interval '00' ;")
 
         conn.commit()
 
