@@ -230,7 +230,7 @@ class AtendanceWork:
             row['wid'] = r[1]
             # row['weekday']=r[2].weekday()
             # row['date'] = r[2].strftime("%A %y-%m-%d")
-            row['date'] = r[2].strftime("%Y-%m-%d")
+            row['date'] = r[2].strftime("%a %Y-%m-%d")
             row['first'] = r[3].strftime("%H:%M:%S %Z")
             row['second'] = r[4].strftime("%H:%M:%S %Z")
             row['late'] = r[6]
