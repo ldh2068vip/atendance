@@ -172,7 +172,9 @@ class AtendanceWork:
             # res['加班时间（小时）'] = round(r[0].total_seconds() / 3600, 2);
             res['ot'] = round(r[0].total_seconds() / 3600, 2);
         # conn.commit()
-
+        cur.execute("select name from employee where wid=%s", (wid,))
+        r = cur.fetchall()
+        res['emp_name'] = r[0][0]
         cur.close()
         conn.close()
         # print(res)
@@ -205,7 +207,6 @@ class AtendanceWork:
             res['ot'] = r[4]
             # print(r[0])
         # conn.commit()
-
         cur.close()
         conn.close()
         # print(res)

@@ -30,6 +30,7 @@
         }
         function printData(data) {
             $('#overtime').text(data.ot.ot);
+            $('#user_name').text(data.ot.emp_name);
             var my_arr = new Array();
             my_arr[0] = data.events.late;
             my_arr[1] = data.events.early_exit;
@@ -98,7 +99,6 @@
             })
         }
         $(function () {
-            $('#user_name').text('haha');
         });
     </script>
 </head>
