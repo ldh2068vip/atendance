@@ -8,6 +8,7 @@
     <script src="../static/js/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../static/js/highcharts.js"></script>
     <script type="text/javascript" src="../static/js/modules/exporting.js"></script>
+    <script src="../static/js/jquery-ui.js"></script>
     <script type="text/javascript">
         function query() {
             var wid = $('#keyword').val();
@@ -99,6 +100,25 @@
             })
         }
         $(function () {
+            //模糊搜索匹配 开始
+            $("#keyword").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "../employees/" + request.term, //根据名称查询
+                        dataType: "json",
+                        success: function (data) {
+                            response($.map(data.ems, function (item) {
+                                        return {
+                                            label: item.wid//显示工号
+                                        }
+                                    })
+                            )
+                            ;
+                        }
+                    });
+                },
+            });
+            //模糊搜索匹配 结束
         });
     </script>
 </head>
@@ -120,7 +140,7 @@
     </div>
     <div class="inquiry">
         <div class="inq">
-            <input name="" type="text" class="text" id="keyword" placeholder="输入员工工号(例:SR000111)..."/>
+            <input  name="" type="text" class="text" id="keyword" placeholder="输入员工工号(例:SR000111)..."/>
             <input name="" type="button" value="查询" class="butt" onclick="query()"/>
         </div>
         <div class="clear"></div>
