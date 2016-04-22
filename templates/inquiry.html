@@ -95,7 +95,7 @@
             var time2 = timeToSeconds('12:00:00');
             var time3 = timeToSeconds('18:00:00');
             $.each(list, function (n, value) {
-                $('#detail_table').append('<tr><td>' + value.date + '</td> <td>' + ((timeToSeconds(value.first) > time1) && (timeToSeconds(value.first) < time2) ? value.first : '') + '</td> <td>' + ((timeToSeconds(value.second) > time2) && (timeToSeconds(value.second) < time3) ? value.second : '') + '</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>' + value.ot + '</td> </tr>');
+                $('#detail_table').append('<tr><td>' + value.date + '</td> <td>' + ((timeToSeconds(value.first) > time1) && (timeToSeconds(value.first) < time2) ? value.first : '') + '</td> <td>' + ((timeToSeconds(value.second) > time2) && (timeToSeconds(value.second) < time3) ? value.second : '') + '</td> <td>' + ((value.mismor == null) ? '' : value.mismor) + '</td> <td>' + ((value.misnoon == null) ? '' : value.misnoon) + '</td> <td>' + value.ot + '</td> </tr>');
             })
         }
         $(function () {
@@ -151,8 +151,6 @@
     </div>
     <div class="clear"></div>
 </div>
-
-
 <div class="foot">
     <div class="foot_main">
         <span>Copyright © 2014 SR All Rights Reserved 湘ICP备14013985号-1</span><span>湖南上容信息技术有限公司  </span>
