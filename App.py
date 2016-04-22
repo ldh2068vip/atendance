@@ -26,7 +26,7 @@ class AtendanceWork:
         data = self.loaddata(filePath)
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -63,7 +63,7 @@ class AtendanceWork:
     def calculate(self, hour, minute):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -109,7 +109,7 @@ class AtendanceWork:
     def addFlexEmp(self, wids):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -125,7 +125,7 @@ class AtendanceWork:
     def delFlexEmp(self, wids):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -141,7 +141,7 @@ class AtendanceWork:
     def queryOTByEm(self, wid):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -152,7 +152,8 @@ class AtendanceWork:
         for r in cur.fetchall():
             # print(r[0].total_seconds()/3600)
             # print(str(r[0]))
-            res['加班时间（小时）'] = round(r[0].total_seconds() / 3600, 2);
+            # res['加班时间（小时）'] = round(r[0].total_seconds() / 3600, 2);
+            res['ot'] = round(r[0].total_seconds() / 3600, 2);
         # conn.commit()
 
         cur.close()
@@ -164,7 +165,7 @@ class AtendanceWork:
     def queryEventByEm(self, wid):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -174,11 +175,16 @@ class AtendanceWork:
             (wid,))
         res = {}
         for r in cur.fetchall():
-            res['迟到'] = r[0]
-            res['早退'] = r[1]
-            res['早上未打卡'] = r[2]
-            res['下午未打卡'] = r[3]
-            res['加班'] = r[4]
+            # res['迟到'] = r[0]
+            # res['早退'] = r[1]
+            # res['早上未打卡'] = r[2]
+            # res['下午未打卡'] = r[3]
+            # res['加班'] = r[4]
+            res['late'] = r[0]
+            res['early_exit'] = r[1]
+            res['no_clock_in_am'] = r[2]
+            res['no_clock_in_pm'] = r[3]
+            res['ot'] = r[4]
             # print(r[0])
         # conn.commit()
 
@@ -191,7 +197,7 @@ class AtendanceWork:
     def queryDetailByEm(self, wid):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]
@@ -202,7 +208,8 @@ class AtendanceWork:
             row = {};
             row['wid'] = r[1]
             # row['weekday']=r[2].weekday()
-            row['date'] = r[2].strftime("%A %y-%m-%d")
+            # row['date'] = r[2].strftime("%A %y-%m-%d")
+            row['date'] = r[2].strftime("%Y-%m-%d")
             row['first'] = r[3].strftime("%H:%M:%S %Z")
             row['second'] = r[4].strftime("%H:%M:%S %Z")
             row['late'] = r[6]
@@ -221,7 +228,7 @@ class AtendanceWork:
     def queryFlexEmployee(self):
         # 连接数据库
         try:
-            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            conn = pg.connect(dbname='atendance', host='10.168.190.191', user='test', password='test', port='5432')
             cur = conn.cursor()
         except Exception, e:
             print "Error: " + e.args[0]

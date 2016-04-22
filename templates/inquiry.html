@@ -9,64 +9,91 @@
     <script type="text/javascript" src="../static/js/highcharts.js"></script>
     <script type="text/javascript" src="../static/js/modules/exporting.js"></script>
     <script type="text/javascript">
+        function query() {
+            var wid = $('#keyword').val();
+            $.ajax(
+                    {
+                        url: '/report/' + wid,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            <!--alert();-->
+                            printData(data);
+                        },
+                        error: function (data) {
+                        }
+                    });
+        }
+        function printData(data) {
+            $('#overtime').text(data.ot.ot);
+            var my_arr = new Array();
+            my_arr[0] = data.events.late;
+            my_arr[1] = data.events.early_exit;
+            my_arr[2] = data.events.no_clock_in_am + data.events.no_clock_in_pm;
+            my_arr[3] = data.events.ot;
+            $('#container').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: '次数'
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y}'
+                        }
+                    }
+                },
+
+                tooltip: {
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> <br/>'
+                },
+
+                series: [{
+                    name: '',
+                    colorByPoint: true,
+                    data: [{
+                        name: '迟到',
+                        y: my_arr[0],
+                    }, {
+                        name: '早退',
+                        y: my_arr[1],
+                    }, {
+                        name: '未打卡',
+                        y: my_arr[2],
+                    }, {
+                        name: '加班',
+                        y: my_arr[3],
+                    }]
+                }]
+            });
+            var list = data.detail;
+            $.each(list, function (n, value) {
+                $('#detail_table').append('<tr><td>' + value.date + '</td> <td>' + value.first + '</td> <td>' + value.second + '</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr>');
+            })
+            <!--$('#detail_table').append('<tr><td>9916-04-23</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr>');-->
+        }
         $(function () {
-    // Create the chart
-    var my_arr = new Array();
-    $('#container').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'lala'
-        },
-        subtitle: {
-            text: 'haha'
-        },
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
-            title: {
-                text: '次数'
-            }
-
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.y}'
-                }
-            }
-        },
-
-        tooltip: {
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> <br/>'
-        },
-
-        series: [{
-            name: '',
-            colorByPoint: true,
-            data: [{
-                name: '迟到',
-                y: 56.33,
-            }, {
-                name: '早退',
-                y: 24.03,
-            }, {
-                name: '未打卡',
-                y: 10.38,
-            }, {
-                name: '加班',
-                y: 4.77,
-            }]
-        }]
-    });
-});
+            $('#user_name').text('haha');
+        });
     </script>
 </head>
 
@@ -87,22 +114,24 @@
     </div>
     <div class="inquiry">
         <div class="inq">
-            <input name="" type="text" class="text"/>
-            <input name="" type="button" value="查询" class="butt"/>
+            <input name="" type="text" class="text" id="keyword"/>
+            <input name="" type="button" value="查询" class="butt" onclick="query()"/>
         </div>
         <div class="clear"></div>
-        <span class="title">员工：张三  个人考勤情况</span>
+        <span class="title">员工：<span id="user_name"></span>  个人考勤情况</span>
+
         <div class="time">
             <span>加班时长(小时)</span>
-            <span class="timess">45:23:00</span>
+            <span class="timess" id="overtime"></span>
         </div>
         <div class="account">
-            <div id="container" style="min-width: 110px; max-width: 500px; height: 293px; margin: 0 auto"></div>
+            <div id="container"
+                 style="position:relative;top:10px;min-width: 110px; max-width: 500px; height: 95%; margin: 0 auto;bottom:0px;"></div>
         </div>
         <div class="clear"></div>
         <div class="table">
-            <table width="100%" border="0">
-                <tr class="table_title">
+            <table width="100%" border="0" id="detail_table">
+                <tr class="table_title" id="first_td">
                     <td>日期</td>
                     <td>迟到</td>
                     <td>早退</td>
@@ -112,54 +141,6 @@
                 </tr>
                 <tr>
                     <td>2016-04-23</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -179,7 +160,5 @@
         <span>Copyright © 2014 SR All Rights Reserved 湘ICP备14013985号-1</span><span>湖南上容信息技术有限公司  </span>
     </div>
 </div>
-
-
 </body>
 </html>
