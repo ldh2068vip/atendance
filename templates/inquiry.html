@@ -17,10 +17,10 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function (data) {
-                            <!--alert();-->
                             printData(data);
                         },
                         error: function (data) {
+                            alert('未找到该员工');
                         }
                     });
         }
@@ -120,7 +120,7 @@
     </div>
     <div class="inquiry">
         <div class="inq">
-            <input name="" type="text" class="text" id="keyword"/>
+            <input name="" type="text" class="text" id="keyword" placeholder="输入员工工号(例:SR000111)..."/>
             <input name="" type="button" value="查询" class="butt" onclick="query()"/>
         </div>
         <div class="clear"></div>
