@@ -217,6 +217,7 @@ class AtendanceWork:
         cur.close()
         conn.close()
         return res
+
     # 查询弹性考核的员工
     def queryFlexEmployee(self):
         # 连接数据库
@@ -230,7 +231,35 @@ class AtendanceWork:
         # row = {};
         # for r in cur.fetchall():
         #     row[r[0]]=r[1]
-        return cur.fetchall()
+        res=cur.fetchall();
+        cur.close()
+        conn.close()
+        return res
+        # return row
+
+    # 查询所有的员工（模糊查询）
+    def queryAllEmployee(self,name):
+        # 连接数据库
+        try:
+            conn = pg.connect(dbname='atendance', host='127.0.0.1', user='test', password='test', port='5432')
+            cur = conn.cursor()
+        except Exception, e:
+            print "Error: " + e.args[0]
+
+        cur.execute("select name,wid from employee WHERE  name ilike %s  ORDER BY wid",(name+"%",))
+        res = []
+        for r in cur.fetchall():
+            row = {};
+            row['name'] = r[0]
+            row['wid'] = r[1]
+            # print(row)
+            res.append(row);
+
+        conn.commit()
+        cur.close()
+        conn.close()
+        # print(res)
+        return res
         # return row
 
 

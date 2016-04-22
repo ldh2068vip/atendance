@@ -2,9 +2,7 @@
 # -*- coding: UTF-8 -*-
 import os
 from flask import Flask, jsonify, request, render_template
-from flask.ext import restful
 import sys
-from werkzeug.utils import secure_filename
 import App
 
 reload(sys)
@@ -16,12 +14,17 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
 @app.route('/config/')
 def admin():
     return render_template('Admin.html')
+
+
 @app.route('/report/')
 def reporthtml():
     return render_template('inquiry.html')
+
 
 # 根据工号查询个人考勤详情
 @app.route('/report/<string:wid>', methods=['GET'])
@@ -49,11 +52,11 @@ def employeeManage(wid):
 
 
 # 重新计算考勤
-@app.route('/calc/<int:hour>/<int:minute>', methods=['GET'])
+@app.route('/calc/<int:hour>/<int:minute>', methods=['UPDATE','GET'])
 def calculate(hour, minute):
     work = App.AtendanceWork();
     work.calculate(hour, minute);
-    return 'success'
+    return 'Success'
 
 
 # 获取弹性考核的员工
@@ -64,8 +67,18 @@ def queryFlexEmployee():
     return jsonify(res)
 
 
+# 获取所有的员工
+@app.route('/employees/<name>', methods=['GET'])
+def queryAllEmployee(name):
+    work = App.AtendanceWork();
+    res={}
+    res['ems'] = work.queryAllEmployee(name);
+
+    return jsonify(res)
+
+
 # 文件上传并解析入库
-@app.route('/file/', methods=['POST','GET'])
+@app.route('/file/', methods=['POST', 'GET'])
 def fileUpload():
     if request.method == 'POST':
         f = request.files['file']
