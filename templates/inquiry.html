@@ -92,11 +92,12 @@
                 }]
             });
             var list = data.detail;
-            var time1 = timeToSeconds('09:00:00');
-            var time2 = timeToSeconds('12:00:00');
-            var time3 = timeToSeconds('18:00:00');
+            <!--var time1 = timeToSeconds('09:00:00');-->
+            <!--var time2 = timeToSeconds('12:00:00');-->
+            <!--var time3 = timeToSeconds('18:00:00');-->
+            $('#detail_table').html('<tr class="table_title" id="first_td"><td id="first_row">日期</td><td>上班打卡</td><td>下班打卡</td><td>迟到</td><td>早退</td><td>上班未打卡</td><td>下班未打卡</td><td>加班</td></tr>');
             $.each(list, function (n, value) {
-                $('#detail_table').append('<tr><td>' + value.date + '</td><td>'+value.first+'</td><td>'+value.second+'</td> <td>' + ((timeToSeconds(value.first) > time1) && (timeToSeconds(value.first) < time2) ? value.first : '') + '</td> <td>' + ((timeToSeconds(value.second) > time2) && (timeToSeconds(value.second) < time3) ? value.second : '') + '</td> <td>' + ((value.mismor == null) ? '' : value.mismor) + '</td> <td>' + ((value.misnoon == null) ? '' : value.misnoon) + '</td> <td>' + value.ot + '</td> </tr>');
+                $('#detail_table').append('<tr><td>' + value.date + '</td><td>'+value.first+'</td><td>'+value.second+'</td> <td>' + ((value.late!=null) ? value.first : '') + '</td> <td>' + ((value.earlyout!=null) ? value.second : '') + '</td> <td>' + ((value.mismor == null) ? '' : value.mismor) + '</td> <td>' + ((value.misnoon == null) ? '' : value.misnoon) + '</td> <td>' + value.ot + '</td> </tr>');
             })
         }
         $(function () {
@@ -121,6 +122,9 @@
             //模糊搜索匹配 结束
         });
     </script>
+    <style>
+        #first_row{width:200px}
+    </style>
 </head>
 
 <body>
@@ -158,7 +162,7 @@
         <div class="table">
             <table width="100%" border="0" id="detail_table">
                 <tr class="table_title" id="first_td">
-                    <td>日期</td>
+                    <td id="first_row">日期</td>
                     <td>上班打卡</td>
                     <td>下班打卡</td>
                     <td>迟到</td>
