@@ -15,6 +15,7 @@ CREATE TABLE atendance (
   wid   VARCHAR(20),
   adate DATE,
   atime TIME,
+  old_data BOOLEAN,
   PRIMARY KEY (id),
     CONSTRAINT atendance_un_key UNIQUE (wid,adate,atime)
 );

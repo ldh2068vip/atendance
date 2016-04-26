@@ -49,7 +49,7 @@ class AtendanceWork:
         for row in data.itertuples():
             # print(row[4].split(" ")[0])
             try:
-                cur.execute("insert into atendance (wid,adate,atime) VALUES (%s,%s,%s)",
+                cur.execute("insert into atendance (wid,adate,atime,old_data) VALUES (%s,%s,%s,false)",
                             (row[3], row[4].split(" ")[0], row[4].split(" ")[1]))
             except Exception, e:
                 print("Error:" + e.args[0])
@@ -65,7 +65,7 @@ class AtendanceWork:
         conn.commit();
 
         cur.execute(
-            "select wid ,adate,min(atime) as mintime,max(atime) as maxtime from atendance m  group by wid,adate order by wid,adate;")
+            "select wid ,adate,min(atime) as mintime,max(atime) as maxtime from atendance m where m.old_data=false group by wid,adate order by wid,adate;")
         rows = cur.fetchall()
 
         for r in rows:
@@ -77,6 +77,8 @@ class AtendanceWork:
                 print("Error:" + e.args[0])
         cur.execute("update report set wt = justify_hours(sedat-firstat);")
         cur.execute("update report set  ot = (wt - interval '9:00')  where (wt - interval '9:00') > interval '00' ;")
+
+        cur.execute("update atendance set old_data=true")
 
         conn.commit()
 
