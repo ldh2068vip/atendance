@@ -1,7 +1,7 @@
 # __author__ = 'kevin'
 # -*- coding: UTF-8 -*-
 import os
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect
 import sys
 import App
 
@@ -87,7 +87,7 @@ def fileUpload():
         app = App.AtendanceWork()
         app.extract(path)
 
-        return '上传成功'
+        return redirect('/')
     elif request.method == 'GET':
         return render_template('loading.html')
 
