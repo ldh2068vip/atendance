@@ -182,7 +182,10 @@ class AtendanceWork:
             # print(r[0].total_seconds()/3600)
             # print(str(r[0]))
             # res['加班时间（小时）'] = round(r[0].total_seconds() / 3600, 2);
-            res['ot'] = round(r[0].total_seconds() / 3600, 2);
+            if r[0] is not None:
+                res['ot'] = round(r[0].total_seconds() / 3600, 2);
+            else :
+                res['ot'] = 0;
         # conn.commit()
         cur.execute("select name from employee where wid=%s", (wid,))
         r = cur.fetchall()
