@@ -1,5 +1,5 @@
 .idea/
-file/
+file/*.xls*
 .settings/
 .DS_Store
 *.class

@@ -82,7 +82,11 @@ def queryAllEmployee(name):
 def fileUpload():
     if request.method == 'POST':
         f = request.files['file']
-        path = os.path.join(os.path.dirname(__file__), "file/" + f.filename)
+        foPath=os.path.join(os.path.dirname(__file__), "file")
+        path = os.path.join(foPath,f.filename)
+        print path
+        # path = os.path.join(os.path.dirname(__file__), "file/" + f.filename)
+
         f.save(path)
         app = App.AtendanceWork()
         app.extract(path)
