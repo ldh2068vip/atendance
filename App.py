@@ -50,7 +50,7 @@ class AtendanceWork:
             # print(row[4].split(" ")[0])
             try:
                 cur.execute("insert into atendance (wid,adate,atime,old_data) VALUES (%s,%s,%s,false)",
-                            (row[3], row[4].split(" ")[0], row[4].split(" ")[1]))
+                            (int(row[3]), row[4].split(" ")[0], row[4].split(" ")[1]))
             except Exception, e:
                 print("Error:" + e.args[0])
         conn.commit()
@@ -59,7 +59,7 @@ class AtendanceWork:
         for row in allWorks.itertuples():
             try:
                 cur.execute("insert into employee (wid,name,dep,bakup) VALUES (%s,%s,%s,%s)",
-                            (row[3], row[2], row[1], row[7]));
+                            (int(row[3]), row[2], row[1], row[7]));
             except Exception, e:
                 print("Error:" + e.args[0])
         conn.commit();
@@ -310,7 +310,7 @@ class AtendanceWork:
 if __name__ == "__main__":
     work = AtendanceWork();
     em = ('SR000118', 'SR000123')
-    # work.extract("file/test.xlsx")
-    work.addFlexEmp(em)
-    work.calculate(9, 0);
+    work.extract("file/666.xlsx")
+    # work.addFlexEmp(em)
+    # work.calculate(9, 0);
     # work.queryDetailByEm("SR000020");
